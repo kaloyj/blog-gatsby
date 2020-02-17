@@ -7,8 +7,11 @@ const usePosts = () => {
         nodes {
           frontmatter {
             title
+            date
             author
             slug
+            coverSource
+            coverAlt
             excerpt
             image {
               sharp: childImageSharp {
