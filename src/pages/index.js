@@ -15,8 +15,8 @@ const IndexPage = () => {
       <Hero></Hero>
       <div
         css={css`
-          width: 92%;
-          margin-left: 4%;
+          width: 90%;
+          margin-left: 5%;
           margin: 1rem auto;
         `}
       >

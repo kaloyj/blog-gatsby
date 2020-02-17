@@ -28,9 +28,12 @@ const usePosts = () => {
 
   return data.allMdx.nodes.map(post => ({
     title: post.frontmatter.title,
+    date: post.frontmatter.date,
+    coverSource: post.frontmatter.coverSource,
+    coverAlt: post.frontmatter.coverAlt,
     author: post.frontmatter.author,
     slug: post.frontmatter.slug,
-    image: post.frontmatter.image,
+    image: post.frontmatter.image.sharp.fluid,
     excerpt: post.frontmatter.excerpt,
   }))
 }
