@@ -31,7 +31,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
-        fonts: ["DM Sans"],
+        fonts: ["DM Sans:400,500,700"],
         display: "swap",
       },
     },
@@ -41,6 +41,44 @@ module.exports = {
         rule: {
           include: /assets/,
         },
+      },
+    },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "posts",
+        path: "posts",
+      },
+    },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "100-days-of-code",
+        path: "posts/100-days-of-code",
+      },
+    },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "dev-life",
+        path: "posts/dev-life",
+      },
+    },
+    {
+      resolve: "gatsby-source-filesystem",
+      options: {
+        name: "reviews",
+        path: "posts/reviews",
+      },
+    },
+    {
+      resolve: "gatsby-plugin-mdx",
+      options: {
+        defaultLayouts: {
+          default: require.resolve("./src/components/layout.js"),
+        },
+        gatsbyRemarkPlugins: ["gatsby-remark-images"],
+        plugins: ["gatsby-remark-images"],
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality

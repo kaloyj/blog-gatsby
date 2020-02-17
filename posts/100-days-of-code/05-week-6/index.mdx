@@ -1,0 +1,63 @@
+---
+title: "#100DaysOfCode: Week 6"
+date: "02/13/2020"
+slug: 100-days-of-code/week-6
+author: Carlo Janea
+image: ../../../src/images/cover-photo.jpeg
+excerpt: What happened last last last week
+---
+
+Six??? Crazy to think how we're halfway there already! (If my math serves me right: 100 days = ~12 work weeks)
+
+Anyways, as I soak my feelings with awe and shock, let's get back to our regular programming!
+
+For work, I'd say things were eventful (well, relative to what you would consider as eventful). Remember how on last week's post, I considered setting up our project locally without docker and how that would be a challenge? Well, it turned out to be a freakin' mammoth of a challenge! It took 2 weeks! 2 weeks of tinkering around legacy gems, packages, and different builds for certain services; 2 weeks of googling, stack overflow, and foreign blogs to solve whatever problem was at hand, only to land upon another problem, and then the cycle repeats!
+
+But as challenges come, we face them steadily! Alleged solutions from different sources were tried but all seemed lost and unsolvable. But like all problems, with the right perspective and thinking, some things can be solved -- in a hacky way or not.
+
+Refresher on why not just containerize the project and avoid this 2 week setup disaster: company bought a new mac but the resources were not enough to host all microservice's containers.
+
+So after we've tried all solutions with setting up locally, the team thought of a solution to simulate a container. To put all microservice containers inside one container would be a valid idea but that would hold ~10GB of memory.
+
+How would you simulate that, then? With a hard disk backup! We backed up our team leads computer (without the secrets, histories, and all other private things) and used time machine to recover the state of his computer to mine.
+
+Problem solved!
+
+So we thought. Doing such implementation would copy his account, his home directory, the internal workings of his computer that is bound to his account name! Change it maybe? Wrong! That would cause the entire set up (and it's interconnected micro services to recompile and may cause some ghastly bugs!)
+
+Solution? Just use the work computer under the team lead's home directory. It really isn't that bad. Idk why I made it seem that way LOL.
+
+SEE! That was eventful for me. The emotional rollercoaster of thinking that a "solution" found on the interweebz was the one to fix it all and then it turns out it isn't, and when the actual solutions does work - sheer joy (or relief, really)
+
+But from a reader's perspective, yeah that may seem my week was meh.
+
+But not to me! And I guess that's what really matters.
+
+Also, this week I finished my Gatsby course on @frontendmaters, and started creating mockups for my static portfolio site and eventually my blog (where all these posts would be transferred)
+
+I also started coding the mockups today and hopefully will be deployed soon. So stay tuned!
+
+As for my learnings this week, here are some of it:
+
+- patience and empathy from the team (and myself!)
+- gatsby greatness
+- gatsby plugins!
+- svg basics
+- perseverance from failure!
+- Design by context, audience, and purpose!
+
+Haha, it may seem very non-tech related but most of these learnings are really helpful. Growth!
+
+Also, remember the post were I started reading a book? Man, I haven't covered half of it! I'm currently at chapther three but I did apply what I learned there on my mock ups! I'm currently (and still) reading **_Emotional Design by Donald Norman_**
+
+I also got featured on @cassidoo's newsletter, again! Haha little things!
+
+Ughhh, What a week right? Enough challenges to grow from failure and the equal support from the team -- I wouldn't want it any other way!
+
+That being said, I'm always thankful for the team for helping find solutions for the problem at hand. Hacky, but it worked! Well soon find a better way to containerize everything in a way that it wont eat up the entire resources of a well enough machine. But for now, this solution is golden amongst others.
+
+Alright, enough of me. How was your week? Let me know on twitter! @carlojanea
+
+As always, thanks for sticking by!
+
+See you on the next one!

@@ -1,17 +1,31 @@
 import React from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import Hero from "../components/hero"
+import { css } from "@emotion/core"
+import PostPreview from "../components/post-preview"
+import usePosts from "../hooks/usePosts"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      Welcome to blog
-    </div>
-  </Layout>
-)
-
+const IndexPage = () => {
+  const posts = usePosts()
+  console.log({ posts })
+  return (
+    <Layout>
+      <SEO />
+      <Hero></Hero>
+      <div
+        css={css`
+          width: 92%;
+          margin-left: 4%;
+          margin: 1rem auto;
+        `}
+      >
+        <h2>Posts</h2>
+        {posts.map(post => (
+          <PostPreview post={post}></PostPreview>
+        ))}
+      </div>
+    </Layout>
+  )
+}
 export default IndexPage

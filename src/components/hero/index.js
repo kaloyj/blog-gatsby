@@ -1,0 +1,96 @@
+import React from "react"
+import { css } from "@emotion/core"
+import Img from "gatsby-image"
+import Background from "./assets/blog-bg.svg"
+import { COLOR_SCHEME } from "../layout"
+import useMainPhoto from "../../hooks/useMainPhoto"
+
+const Hero = () => {
+  const coverPhoto = useMainPhoto()
+  return (
+    <div
+      css={css`
+        height: 80vh;
+        width: 100%;
+        position: relative;
+      `}
+    >
+      <Background
+        viewBox="1300 0 300 540"
+        css={css`
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: -1;
+        `}
+      ></Background>
+
+      <div
+        css={css`
+          display: flex;
+          flex-flow: row wrap;
+          align-content: center;
+          width: 92%;
+          margin-left: 4%;
+          height: 100%;
+          align-items: center;
+        `}
+      >
+        <div
+          css={css`
+            height: 100px;
+            width: 100px;
+            border: 3px solid ${COLOR_SCHEME.accent};
+            border-radius: 50%;
+            overflow: hidden;
+          `}
+        >
+          <Img
+            css={css`
+              object-fit: cover;
+            `}
+            fluid={coverPhoto}
+            alt="carlo janea's face"
+            fadeIn={true}
+          />
+        </div>
+
+        <div
+          css={css`
+            flex: 0 0 100%;
+            margin: 1.25rem auto;
+            display: flex;
+          `}
+        >
+          <h1
+            css={css`
+              margin-left: 0.3rem;
+              flex-basis: 60%;
+              color: white;
+              text-transform: uppercase;
+              font-weight: 700;
+              letter-spacing: 0.1rem;
+            `}
+          >
+            Blogs and other blunders
+          </h1>
+        </div>
+
+        <h3
+          css={css`
+            flex-basis: 90%;
+            color: white;
+            font-weight: 500;
+            margin-left: 0.3rem;
+            line-height: 1.5rem;
+          `}
+        >
+          I'm Carlo Janea, a front-end engineer, and I write things  on tech,
+          life, and just about anything really.
+        </h3>
+      </div>
+    </div>
+  )
+}
+
+export default Hero
