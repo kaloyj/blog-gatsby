@@ -1,6 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Global, css } from "@emotion/core"
+import Footer from "./footer"
 
 export const COLOR_SCHEME = {
   accent: "#2667FF",
@@ -45,16 +46,7 @@ const Layout = ({ children }) => {
         >
           {children}
         </main>
-        <footer
-          css={css`
-            height: 10vh;
-            background-color: ${COLOR_SCHEME.darkBlue};
-            color: white;
-            text-align: center;
-          `}
-        >
-          © {new Date().getFullYear()}, Carlo Janea
-        </footer>
+        <Footer></Footer>
       </div>
     </>
   )

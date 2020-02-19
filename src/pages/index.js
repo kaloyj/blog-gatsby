@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import Hero from "../components/hero"
@@ -58,10 +58,19 @@ const IndexPage = () => {
             ></input>
           </div>
         </div>
-
-        {filteredPosts.map(post => (
-          <PostPreview post={post}></PostPreview>
-        ))}
+        {debouncedSearchKey && filteredPosts.length === 0 ? (
+          <h3
+            css={css`
+              margin-top: 1rem;
+            `}
+          >
+            No posts found.
+          </h3>
+        ) : (
+          filteredPosts.map(post => (
+            <PostPreview key={post.slug} post={post}></PostPreview>
+          ))
+        )}
       </div>
     </Layout>
   )
