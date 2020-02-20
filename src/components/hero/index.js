@@ -22,6 +22,10 @@ const Hero = () => {
           top: 0;
           left: 0;
           z-index: -1;
+
+          @media screen and (min-width: 1200px) {
+            border: 3px solid yellow;
+          }
         `}
       ></Background>
 
@@ -34,6 +38,15 @@ const Hero = () => {
           margin-left: 4%;
           height: 100%;
           align-items: center;
+
+          @media only screen and (min-width: 768px) {
+            justify-content: center;
+
+            h1,
+            h3 {
+              text-align: center;
+            }
+          }
         `}
       >
         <div
@@ -43,6 +56,11 @@ const Hero = () => {
             border: 3px solid ${COLOR_SCHEME.accent};
             border-radius: 50%;
             overflow: hidden;
+
+            @media only screen and (min-width: 768px) {
+              height: 150px;
+              width: 150px;
+            }
           `}
         >
           <Img
@@ -60,6 +78,10 @@ const Hero = () => {
             flex: 0 0 100%;
             margin: 1.25rem auto;
             display: flex;
+
+            @media only screen and (min-width: 768px) {
+              justify-content: center;
+            }
           `}
         >
           <h1
@@ -70,6 +92,12 @@ const Hero = () => {
               text-transform: uppercase;
               font-weight: 700;
               letter-spacing: 0.1rem;
+
+              @media only screen and (min-width: 768px) {
+                flex-basis: 80%;
+                font-size: 2.75rem;
+                letter-spacing: 0.175rem;
+              }
             `}
           >
             Blogs and other blunders
@@ -83,6 +111,12 @@ const Hero = () => {
             font-weight: 500;
             margin-left: 0.3rem;
             line-height: 1.5rem;
+
+            @media only screen and (min-width: 768px) {
+              flex-basis: 70%;
+              font-size: 1.75rem;
+              line-height: 2rem;
+            }
           `}
         >
           I'm Carlo Janea, a front-end engineer, and I write things  on tech,

@@ -27,6 +27,11 @@ const IndexPage = () => {
           width: 90%;
           margin-left: 5%;
           margin: 1rem auto;
+
+          @media only screen and (min-width: 768px) {
+            margin-left: 25%;
+            width: 50%;
+          }
         `}
       >
         <div
