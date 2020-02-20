@@ -50,6 +50,10 @@ const PostTemplate = ({
           width: 100%;
           height: 40vh;
           position: relative;
+
+          @media only screen and (min-width: 1200px) {
+            height: 60vh;
+          }
         `}
       >
         <Img
@@ -95,6 +99,12 @@ const PostTemplate = ({
           width: 88%;
           display: flex;
           flex-flow: row wrap;
+
+          @media only screen and (min-width: 768px) {
+            margin-top: 2rem;
+            margin-left: 15%;
+            width: 70%;
+          }
         `}
       >
         <div

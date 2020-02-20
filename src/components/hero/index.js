@@ -13,19 +13,23 @@ const Hero = () => {
         height: 80vh;
         width: 100%;
         position: relative;
+
+        @media only screen and (min-width: 768px) {
+          height: 60vh;
+        }
+
+        @media screen and (min-width: 1200px) {
+          height: 60vh;
+        }
       `}
     >
       <Background
-        viewBox="1300 0 300 540"
+        preserveAspectRatio="xMidYMid slice"
         css={css`
           position: absolute;
           top: 0;
           left: 0;
           z-index: -1;
-
-          @media screen and (min-width: 1200px) {
-            border: 3px solid yellow;
-          }
         `}
       ></Background>
 
@@ -61,10 +65,17 @@ const Hero = () => {
               height: 150px;
               width: 150px;
             }
+
+            @media screen and (min-width: 1200px) {
+              height: 120px;
+              width: 120px;
+            }
           `}
         >
           <Img
             css={css`
+              height: 100%;
+              width: 100%;
               object-fit: cover;
             `}
             fluid={coverPhoto}
@@ -98,6 +109,12 @@ const Hero = () => {
                 font-size: 2.75rem;
                 letter-spacing: 0.175rem;
               }
+
+              @media screen and (min-width: 1200px) {
+                flex-basis: 60%;
+                padding: 0 10%;
+                font-size: 2.25rem;
+              }
             `}
           >
             Blogs and other blunders
@@ -117,10 +134,15 @@ const Hero = () => {
               font-size: 1.75rem;
               line-height: 2rem;
             }
+
+            @media screen and (min-width: 1200px) {
+              flex-basis: 60%;
+              font-size: 1.25rem;
+            }
           `}
         >
           I'm Carlo Janea, a front-end engineer, and I write things  on tech,
-          life, and just about anything really.
+          life, and just about anything.
         </h3>
       </div>
     </div>

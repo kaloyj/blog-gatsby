@@ -27,19 +27,33 @@ const IndexPage = () => {
           width: 90%;
           margin-left: 5%;
           margin: 1rem auto;
+          display: flex;
+          flex-flow: row wrap;
 
           @media only screen and (min-width: 768px) {
             margin-left: 25%;
             width: 50%;
+          }
+
+          @media screen and (min-width: 1200px) {
+            margin-left: 15%;
+            width: 70%;
           }
         `}
       >
         <div
           css={css`
             display: flex;
+            flex: 0 0 100%;
+
             flex-flow: row wrap;
             align-items: center;
             justify-content: space-between;
+
+            @media screen and (min-width: 1200px) {
+              flex: 0 0 92%;
+              margin-left: 4%;
+            }
           `}
         >
           <h2>Posts</h2>

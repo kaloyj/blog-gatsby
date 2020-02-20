@@ -12,7 +12,23 @@ const PostPreview = ({ post }) => {
     stiffness: 200,
   }
   return (
-    <Link to={post.slug}>
+    <Link
+      to={`/${post.slug}`}
+      css={css`
+        flex: 0 0 100%;
+        display: flex;
+        flex-flow: row wrap;
+
+        @media screen and (min-width: 1200px) {
+          flex: 0 0 44%;
+          margin-left: 4%;
+        }
+
+        @media screen and (min-width: 1920px) {
+          flex: 0 0 28%;
+        }
+      `}
+    >
       <motion.div
         layoutTransition={spring}
         whileHover={{ scale: 1.025 }}
@@ -26,6 +42,10 @@ const PostPreview = ({ post }) => {
           position: relative;
           box-shadow: 10px 10px 44px -12px rgba(0, 27, 90, 1),
             2px 2px 8px -3px rgba(0, 27, 90, 1);
+
+          @media screen and (min-width: 1920px) {
+            margin: 1.5rem 0;
+          }
         `}
       >
         <Img
