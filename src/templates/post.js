@@ -161,7 +161,12 @@ const PostTemplate = ({
             }
 
             p {
+              flex: 0 0 100%;
               margin-bottom: 0.75rem;
+              img {
+                width: 100%;
+                height: 100%;
+              }
             }
           `}
         >
