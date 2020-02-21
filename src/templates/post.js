@@ -4,7 +4,6 @@ import { graphql, Link } from "gatsby"
 import Img from "gatsby-image"
 import { css } from "@emotion/core"
 import { MDXRenderer } from "gatsby-plugin-mdx"
-import { motion } from "framer-motion"
 
 export const query = graphql`
   query($slug: String) {
@@ -14,7 +13,7 @@ export const query = graphql`
         date
         image {
           sharp: childImageSharp {
-            fluid {
+            fluid(maxWidth: 900) {
               ...GatsbyImageSharpFluid_withWebp
             }
           }
@@ -47,6 +46,68 @@ const PostTemplate = ({
     <Layout>
       <div
         css={css`
+          width: 88%;
+          height: 10vh;
+          background: white;
+          display: flex;
+          flex-flow: row wrap;
+          align-items: center;
+          margin-left: 6%;
+
+          @media only screen and (min-width: 768px) {
+            margin-left: 4%;
+            width: 92%;
+          }
+        `}
+      >
+        <Link
+          to="/"
+          css={css`
+            text-decoration: none;
+            flex: 0 0 70%;
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+
+            @media only screen and (min-width: 768px) {
+              flex: 0 0 35%;
+            }
+
+            @media only screen and (min-width: 1200px) {
+              flex: 0 0 30%;
+            }
+
+            @media only screen and (min-width: 1920px) {
+              flex: 0 0 25%;
+            }
+          `}
+        >
+          <span
+            css={css`
+              display: flex;
+              flex-flow: row wrap;
+              flex-basis: 75%;
+              color: ${COLOR_SCHEME.darkBlue};
+              font-size: 1rem;
+              font-weight: 700;
+              text-transform: uppercase;
+              letter-spacing: 0.1rem;
+
+              @media only screen and (min-width: 768px) {
+                font-size: 1.25rem;
+              }
+
+              @media only screen and (min-width: 1920px) {
+                font-size: 1.5rem;
+              }
+            `}
+          >
+            Blogs And Blunders
+          </span>
+        </Link>
+      </div>
+      <div
+        css={css`
           width: 100%;
           height: 40vh;
           position: relative;
@@ -69,27 +130,6 @@ const PostTemplate = ({
           alt={coverAlt}
           fadeIn
         ></Img>
-
-        <Link to="/">
-          <motion.span
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.9 }}
-            css={css`
-              border: none;
-              color: ${COLOR_SCHEME.darkBlue};
-              font-size: 1.4rem;
-              font-weight: 700;
-              position: absolute;
-              top: 0;
-              left: 0;
-              margin-left: 2%;
-              margin-top: 1rem;
-              padding: 5px 10px;
-            `}
-          >
-            &larr; Posts
-          </motion.span>
-        </Link>
       </div>
 
       <div
