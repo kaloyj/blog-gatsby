@@ -16,6 +16,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   }
 
   const posts = result.data.allMdx.nodes
+  const queryLength = 6
 
   posts.forEach(post => {
     actions.createPage({
@@ -23,6 +24,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
       component: require.resolve("./src/templates/post.js"),
       context: {
         slug: post.frontmatter.slug,
+        limit: queryLength,
       },
     })
   })

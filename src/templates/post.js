@@ -10,7 +10,7 @@ export const query = graphql`
     mdx(frontmatter: { slug: { eq: $slug } }) {
       frontmatter {
         title
-        date
+        date(formatString: "MMMM DD, YYYY")
         image {
           sharp: childImageSharp {
             fluid(maxWidth: 900) {
@@ -180,8 +180,7 @@ const PostTemplate = ({
             {title}
           </h2>
           <p>
-            Written on{" "}
-            <span>{new Date(date).toLocaleDateString("en-US", options)}</span>
+            Written on <span>{date}</span>
           </p>
           <p>
             Cover Photo by <span>{coverSource}</span>
