@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `Blog | Carlo Janea`,
-    description: `Blogs on tech, life stories, and anything I've thought upon. (Carlo Janea)`,
+    description: `My name's Carlo Janea, a front end engineer in Cebu, Philippines. These are my blogs on tech, life stories, and anything I've thought upon.`,
     author: `@carlojanea`,
   },
   plugins: [
