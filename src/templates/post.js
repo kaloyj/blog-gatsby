@@ -4,6 +4,7 @@ import { graphql, Link } from "gatsby"
 import Img from "gatsby-image"
 import { css } from "@emotion/core"
 import { MDXRenderer } from "gatsby-plugin-mdx"
+import SEO from "../components/seo"
 
 export const query = graphql`
   query($slug: String) {
@@ -20,6 +21,7 @@ export const query = graphql`
         }
         coverAlt
         coverSource
+        excerpt
       }
       body
     }
@@ -36,6 +38,7 @@ const PostTemplate = ({
     date,
     coverAlt,
     coverSource,
+    excerpt,
     image: {
       sharp: { fluid },
     },
@@ -43,6 +46,12 @@ const PostTemplate = ({
 
   return (
     <Layout>
+      <SEO
+        title={`Blog | ${title}`}
+        description={excerpt}
+        image={fluid.src}
+        imageAlt={coverAlt}
+      />
       <div
         css={css`
           width: 88%;
