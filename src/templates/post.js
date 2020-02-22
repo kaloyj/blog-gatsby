@@ -41,7 +41,6 @@ const PostTemplate = ({
     },
   } = frontmatter
 
-  const options = { year: "numeric", month: "long", day: "numeric" }
   return (
     <Layout>
       <div
