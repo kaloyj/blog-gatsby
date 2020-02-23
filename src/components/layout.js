@@ -6,8 +6,9 @@ import Footer from "./footer"
 export const COLOR_SCHEME = {
   accent: "#2667FF",
   darkBlue: "#001B5A",
+  lightestBlue: "#E3EDF4",
 }
-const Layout = ({ children }) => {
+const Layout = ({ children, backgroundColor = "#fff" }) => {
   return (
     <>
       <Global
@@ -42,6 +43,7 @@ const Layout = ({ children }) => {
           css={css`
             min-height: 90vh;
             width: 100vw;
+            background-color: ${backgroundColor};
           `}
         >
           {children}

@@ -61,6 +61,7 @@ const PostTemplate = ({
           flex-flow: row wrap;
           align-items: center;
           margin-left: 6%;
+          background: transparent;
 
           @media only screen and (min-width: 768px) {
             margin-left: 4%;

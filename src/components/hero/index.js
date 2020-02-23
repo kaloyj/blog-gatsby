@@ -29,7 +29,6 @@ const Hero = () => {
           position: absolute;
           top: 0;
           left: 0;
-          z-index: -1;
         `}
       ></Background>
 
@@ -89,6 +88,7 @@ const Hero = () => {
             flex: 0 0 100%;
             margin: 1.25rem auto;
             display: flex;
+            z-index: 1;
 
             @media only screen and (min-width: 768px) {
               justify-content: center;
@@ -128,6 +128,7 @@ const Hero = () => {
             font-weight: 500;
             margin-left: 0.3rem;
             line-height: 1.5rem;
+            z-index: 1;
 
             @media only screen and (min-width: 768px) {
               flex-basis: 70%;

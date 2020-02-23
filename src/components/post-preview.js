@@ -3,6 +3,7 @@ import { css } from "@emotion/core"
 import Img from "gatsby-image"
 import { Link } from "gatsby"
 import { motion } from "framer-motion"
+import { COLOR_SCHEME } from "./layout"
 
 const PostPreview = ({ post }) => {
   const { title, image, coverAlt, excerpt } = post
@@ -84,7 +85,7 @@ const PostPreview = ({ post }) => {
         >
           <h3
             css={css`
-              color: white;
+              color: ${COLOR_SCHEME.lightestBlue};
             `}
           >
             {title}
@@ -92,7 +93,7 @@ const PostPreview = ({ post }) => {
 
           <p
             css={css`
-              color: white;
+              color: ${COLOR_SCHEME.lightestBlue};
               margin-top: 0.125rem;
               font-size: 0.75rem;
             `}
