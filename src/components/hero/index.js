@@ -59,6 +59,7 @@ const Hero = () => {
             border: 3px solid ${COLOR_SCHEME.accent};
             border-radius: 50%;
             overflow: hidden;
+            z-index: 1;
 
             @media only screen and (min-width: 768px) {
               height: 150px;
