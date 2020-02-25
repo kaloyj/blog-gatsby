@@ -5,6 +5,9 @@ const useMainPhoto = () => {
     query {
       placeholderImage: file(relativePath: { eq: "cover-photo.jpeg" }) {
         childImageSharp {
+          resize {
+            src
+          }
           fluid(maxWidth: 400, maxHeight: 400) {
             ...GatsbyImageSharpFluid
           }
@@ -13,7 +16,7 @@ const useMainPhoto = () => {
     }
   `)
 
-  return data.placeholderImage.childImageSharp.fluid
+  return data.placeholderImage.childImageSharp
 }
 
 export default useMainPhoto

@@ -15,6 +15,9 @@ export const query = graphql`
         date(formatString: "MMMM DD, YYYY")
         image {
           sharp: childImageSharp {
+            resize {
+              src
+            }
             fluid(maxWidth: 900) {
               ...GatsbyImageSharpFluid_withWebp
             }
@@ -42,7 +45,7 @@ const PostTemplate = ({
     coverSource,
     excerpt,
     image: {
-      sharp: { fluid },
+      sharp: { fluid, resize },
     },
   } = frontmatter
 
@@ -51,7 +54,7 @@ const PostTemplate = ({
       <SEO
         title={`Blog | ${title}`}
         description={excerpt}
-        image={fluid.src}
+        image={resize.src}
         imageAlt={coverAlt}
         pageUrl={`/${slug}`}
       />

@@ -6,7 +6,7 @@ import { COLOR_SCHEME } from "../layout"
 import useMainPhoto from "../../hooks/useMainPhoto"
 
 const Hero = () => {
-  const coverPhoto = useMainPhoto()
+  const { fluid: coverPhoto } = useMainPhoto()
   return (
     <div
       css={css`

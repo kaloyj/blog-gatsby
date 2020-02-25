@@ -13,8 +13,11 @@ function SEO({
   imageAlt,
   pageUrl = "",
 }) {
-  const url = typeof window !== "undefined" ? window.location.origin : ""
-  const coverPhoto = useMainPhoto()
+  const url =
+    typeof window !== "undefined"
+      ? window.location.origin
+      : "https://blog.carlojanea.com"
+  const { resize } = useMainPhoto()
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -31,7 +34,7 @@ function SEO({
 
   const metaDescription = description || site.siteMetadata.description
   const metaTitle = title || site.siteMetadata.title
-  const metaImage = image || coverPhoto.src
+  const metaImage = image || resize.src
   const metaAlt = imageAlt || "Carlo Janea smiling with trees on the background"
   const metaUrl = `${url}${pageUrl}`
 
