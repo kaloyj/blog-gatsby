@@ -11,6 +11,7 @@ export const query = graphql`
     mdx(frontmatter: { slug: { eq: $slug } }) {
       frontmatter {
         title
+        slug
         date(formatString: "MMMM DD, YYYY")
         image {
           sharp: childImageSharp {
@@ -35,6 +36,7 @@ const PostTemplate = ({
 }) => {
   const {
     title,
+    slug,
     date,
     coverAlt,
     coverSource,
@@ -51,6 +53,7 @@ const PostTemplate = ({
         description={excerpt}
         image={fluid.src}
         imageAlt={coverAlt}
+        pageUrl={`/${slug}`}
       />
       <div
         css={css`

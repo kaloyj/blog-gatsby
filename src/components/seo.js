@@ -4,7 +4,15 @@ import Helmet from "react-helmet"
 import { useStaticQuery, graphql } from "gatsby"
 import useMainPhoto from "../hooks/useMainPhoto"
 
-function SEO({ description, lang, meta, title, image, imageAlt }) {
+function SEO({
+  description,
+  lang,
+  meta,
+  title,
+  image,
+  imageAlt,
+  pageUrl = "",
+}) {
   const url = typeof window !== "undefined" ? window.location.origin : ""
   const coverPhoto = useMainPhoto()
   const { site } = useStaticQuery(
@@ -25,6 +33,7 @@ function SEO({ description, lang, meta, title, image, imageAlt }) {
   const metaTitle = title || site.siteMetadata.title
   const metaImage = image || coverPhoto.src
   const metaAlt = imageAlt || "Carlo Janea smiling with trees on the background"
+  const metaUrl = `${url}${pageUrl}`
 
   return (
     <Helmet
@@ -49,6 +58,10 @@ function SEO({ description, lang, meta, title, image, imageAlt }) {
         {
           property: `og:image`,
           content: `${url}${metaImage}`,
+        },
+        {
+          property: `og:url`,
+          content: metaUrl,
         },
         {
           property: `og:image:width`,
