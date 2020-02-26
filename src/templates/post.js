@@ -207,6 +207,7 @@ const PostTemplate = ({
             flex: 0 0 100%;
             display: flex;
             flex-flow: row wrap;
+            min-width: 0;
 
             p,
             span {
@@ -221,6 +222,16 @@ const PostTemplate = ({
                 width: 100%;
                 height: 100%;
               }
+            }
+
+            pre {
+              background: ${COLOR_SCHEME.codeBackground};
+              max-width: 100%;
+              width: 100%;
+              overflow-x: auto;
+              padding: 1rem;
+              font-size: 0.85rem;
+              margin-bottom: 0.75rem;
             }
           `}
         >

@@ -7,6 +7,7 @@ export const COLOR_SCHEME = {
   accent: "#2667FF",
   darkBlue: "#001B5A",
   lightestBlue: "#E3EDF4",
+  codeBackground: "#E6E6E6",
 }
 const Layout = ({ children, backgroundColor = "#fff" }) => {
   return (
