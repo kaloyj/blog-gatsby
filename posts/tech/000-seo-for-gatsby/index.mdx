@@ -67,8 +67,6 @@ Wrong! That assumption wasted me two days! It turns out there really isn't an or
 ```javascript
 import Helmet from "react-helmet"
 
-// imageSrc is from childImageSharp > resize > src
-// basically a relative path /someimage/someId/file.jpg
 // ENV.ORIGIN_URL is an environment url set to the environment's origin URL
 
 const origin =
@@ -79,7 +77,7 @@ const origin =
 const origin = ENV.ORIGIN_URL
 ```
 
-But why? Shouldn't window exist? We'll yes and no. Yes, we need window to exist when viewing our site, but no when it is being crawled. Turns out when sites like Facebook or Twitter crawls your site, window is not needed!
+But why? Shouldn't window exist? Well yes and no. Yes, we need window to exist when viewing our site, but no when it is being crawled. Turns out when sites like Facebook or Twitter crawls your site, window is not needed!
 
 So in our previous implementation, it would result to just the relative path. (which facebook told us to fix and my hard headed ass didn't listen)
 
