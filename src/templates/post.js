@@ -233,6 +233,11 @@ const PostTemplate = ({
               font-size: 0.85rem;
               margin-bottom: 0.75rem;
             }
+
+            ol,
+            ul {
+              margin-bottom: 1rem;
+            }
           `}
         >
           <MDXRenderer>{body}</MDXRenderer>
