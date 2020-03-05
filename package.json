@@ -20,6 +20,7 @@
     "gatsby-plugin-react-helmet": "^3.1.21",
     "gatsby-plugin-react-svg": "^3.0.0",
     "gatsby-plugin-sharp": "^2.4.3",
+    "gatsby-plugin-webpack-bundle-analyzer": "^1.0.5",
     "gatsby-remark-images": "^3.1.44",
     "gatsby-source-filesystem": "^2.1.46",
     "gatsby-transformer-sharp": "^2.3.14",
@@ -42,7 +43,8 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
+    "analyze": "ANALYZE_BUNDLE_SIZE=true gatsby build"
   },
   "repository": {
     "type": "git",

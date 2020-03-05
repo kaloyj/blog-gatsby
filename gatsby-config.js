@@ -50,27 +50,27 @@ module.exports = {
         path: "posts",
       },
     },
-    {
-      resolve: "gatsby-source-filesystem",
-      options: {
-        name: "100-days-of-code",
-        path: "posts/100-days-of-code",
-      },
-    },
-    {
-      resolve: "gatsby-source-filesystem",
-      options: {
-        name: "dev-life",
-        path: "posts/dev-life",
-      },
-    },
-    {
-      resolve: "gatsby-source-filesystem",
-      options: {
-        name: "reviews",
-        path: "posts/reviews",
-      },
-    },
+    // {
+    //   resolve: "gatsby-source-filesystem",
+    //   options: {
+    //     name: "100-days-of-code",
+    //     path: "posts/100-days-of-code",
+    //   },
+    // },
+    // {
+    //   resolve: "gatsby-source-filesystem",
+    //   options: {
+    //     name: "dev-life",
+    //     path: "posts/dev-life",
+    //   },
+    // },
+    // {
+    //   resolve: "gatsby-source-filesystem",
+    //   options: {
+    //     name: "reviews",
+    //     path: "posts/reviews",
+    //   },
+    // },
     {
       resolve: "gatsby-plugin-mdx",
       options: {
@@ -79,6 +79,15 @@ module.exports = {
         },
         gatsbyRemarkPlugins: ["gatsby-remark-images"],
         plugins: ["gatsby-remark-images"],
+      },
+    },
+    {
+      resolve: "gatsby-plugin-webpack-bundle-analyzer",
+      options: {
+        production: true,
+        disable: !process.env.ANALYZE_BUNDLE_SIZE,
+        generateStatsFile: true,
+        analyzerMode: "static",
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
