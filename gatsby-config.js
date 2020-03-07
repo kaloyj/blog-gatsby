@@ -50,27 +50,6 @@ module.exports = {
         path: "posts",
       },
     },
-    // {
-    //   resolve: "gatsby-source-filesystem",
-    //   options: {
-    //     name: "100-days-of-code",
-    //     path: "posts/100-days-of-code",
-    //   },
-    // },
-    // {
-    //   resolve: "gatsby-source-filesystem",
-    //   options: {
-    //     name: "dev-life",
-    //     path: "posts/dev-life",
-    //   },
-    // },
-    // {
-    //   resolve: "gatsby-source-filesystem",
-    //   options: {
-    //     name: "reviews",
-    //     path: "posts/reviews",
-    //   },
-    // },
     {
       resolve: "gatsby-plugin-mdx",
       options: {

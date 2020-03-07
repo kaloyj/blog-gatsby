@@ -13,12 +13,20 @@ const PostPreview = ({ post }) => {
     stiffness: 200,
   }
   return (
-    <Link
-      to={`/${post.slug}`}
+    <motion.div
+      layoutTransition={spring}
+      whileHover={{ scale: 1.025 }}
+      whileTap={{ scale: 1 }}
       css={css`
         flex: 0 0 100%;
         display: flex;
         flex-flow: row wrap;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 1rem 0;
+        position: relative;
+        box-shadow: 10px 10px 44px -12px rgba(0, 27, 90, 1),
+          2px 2px 8px -3px rgba(0, 27, 90, 1);
 
         @media screen and (min-width: 1200px) {
           flex: 0 0 44%;
@@ -26,27 +34,16 @@ const PostPreview = ({ post }) => {
         }
 
         @media screen and (min-width: 1920px) {
+          margin: 1.5rem 0 1.5rem 4%;
           flex: 0 0 28%;
         }
       `}
     >
-      <motion.div
-        layoutTransition={spring}
-        whileHover={{ scale: 1.025 }}
-        whileTap={{ scale: 1 }}
+      <Link
+        to={`/${post.slug}`}
         css={css`
           height: 250px;
           width: 100%;
-          border-radius: 10px;
-          overflow: hidden;
-          margin: 1rem 0;
-          position: relative;
-          box-shadow: 10px 10px 44px -12px rgba(0, 27, 90, 1),
-            2px 2px 8px -3px rgba(0, 27, 90, 1);
-
-          @media screen and (min-width: 1920px) {
-            margin: 1.5rem 0;
-          }
         `}
       >
         <Img
@@ -74,7 +71,6 @@ const PostPreview = ({ post }) => {
             );
           `}
         ></div>
-
         <div
           css={css`
             width: 92%;
@@ -100,9 +96,9 @@ const PostPreview = ({ post }) => {
           >
             {excerpt}
           </p>
-        </div>
-      </motion.div>
-    </Link>
+        </div>{" "}
+      </Link>
+    </motion.div>
   )
 }
 
