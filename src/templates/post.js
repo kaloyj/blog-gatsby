@@ -157,6 +157,12 @@ const PostTemplate = ({
 
           @media only screen and (min-width: 768px) {
             margin-top: 2rem;
+            margin-left: 25%;
+            width: 50%;
+          }
+
+          @media only screen and (min-width: 1200px) {
+            margin-top: 2rem;
             margin-left: 15%;
             width: 70%;
           }

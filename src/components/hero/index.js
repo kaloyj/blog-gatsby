@@ -50,6 +50,11 @@ const Hero = () => {
               text-align: center;
             }
           }
+
+          @media only screen and (min-width: 1920px) {
+            width: 70%;
+            margin-left: 15%;
+          }
         `}
       >
         <div
@@ -107,14 +112,13 @@ const Hero = () => {
 
               @media only screen and (min-width: 768px) {
                 flex-basis: 80%;
-                font-size: 2.75rem;
+                font-size: 2.5rem;
                 letter-spacing: 0.175rem;
               }
 
               @media screen and (min-width: 1200px) {
                 flex-basis: 60%;
                 padding: 0 10%;
-                font-size: 2.25rem;
               }
             `}
           >
@@ -133,13 +137,12 @@ const Hero = () => {
 
             @media only screen and (min-width: 768px) {
               flex-basis: 70%;
-              font-size: 1.75rem;
+              font-size: 1.5rem;
               line-height: 2rem;
             }
 
             @media screen and (min-width: 1200px) {
               flex-basis: 60%;
-              font-size: 1.25rem;
             }
           `}
         >
