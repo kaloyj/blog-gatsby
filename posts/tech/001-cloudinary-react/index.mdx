@@ -1,0 +1,203 @@
+---
+title: Integrating Cloudinary with React
+date: 2020-05-16
+slug: tech/cloudinary-with-react
+author: Carlo Janea
+image: ./images/nicholas-swanson.jpg
+coverSource: Nicholas Swanson
+coverAlt: no image
+excerpt: creating a custom upload hook
+---
+
+So I was making a side project that needed to manage uploads of multiple images and to make sure that modification of such image would be fairly fast and easy.
+
+You can totally handle this yourself (upload endpoint + image modification) but having not to invest much time on such endeavor, I decided to use [Cloudinary](https://cloudinary.com/)
+
+Disclaimer: You can alternatively use the [cloudinary-sdk](https://www.npmjs.com/package/cloudinary) to create an upload endpoint yourself instead of creating this custom hook, either way, both achieve the same results, it all depends on your use-case on how to handle the returned response.
+
+Alright, to begin, we first need to create a file called `useCloudinary.ts` (I'm using typescript, and you can name it however you want), and this is where our custom upload hook will be born. 😀
+
+```javascript
+// provided by cloudinary in your account
+// used for upload purposes
+const cloudName = process.env.CLOUDINARY_CLOUD_NAME
+const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET
+
+const useCloudinary = () => {
+  const uploadFiles = () => {
+    // cloudinary upload here
+  }
+
+  // we include cloudName, and uploadPreset
+  // so we dont keep accessing the environment variables
+  return { cloudName, uploadPreset, uploadFiles }
+}
+
+export default useCloudinary
+```
+
+For typescript users, we first need to create a type (or interface for people who prefer it) for our upload method inside our `useCloudinary` hook.
+
+```
+type UploadFilesFuncType = (files: FileList | File[]) => Promise<string[]>;
+```
+
+It may receive a `FileList` or an array of files because I'm using [react-dropzone](https://github.com/react-dropzone/react-dropzone) to handle uploads and selecting multiple files returns a `FileList` while dragging multiple files returns an array of type `File`. Both are iterable and return a file so they eventually do the same thing, just different data structures.
+
+Our upload method also returns an array of strings which will hold the result of the upload method. We're using type `string` because we want to either store just the url of the uploaded image, or a stringified object to be passed to the server.
+
+In my use-case this is an array of stringified objects because I'm passing this down to my server to save the URL and the publicId of the uploaded image (context below)
+
+Next, we fill in our `uploadFile` method inside our `useCloudinary` hook.
+
+```javascript
+const uploadFiles: UploadFilesFuncType = async files => {
+  const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`
+  let images: string[] = []
+
+  for (let i = 0; i < files.length; i++) {
+    const formData = new FormData()
+    formData.append("upload_preset", uploadPreset)
+    formData.append("tags", "test-uploads")
+    formData.append("file", files[i])
+    try {
+      const result = await fetch(url, {
+        method: "POST",
+        body: formData,
+      })
+      const image = await result.json()
+      images.push(
+        JSON.stringify({ url: image.secure_url, publicId: image.public_id })
+      )
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  return Promise.all(images)
+}
+```
+
+Let's break this down.
+
+```javascript
+const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`
+let images: string[] = []
+```
+
+The url endpoint is provided by cloudinary to allow users to upload images via the client side.
+
+We create an array of strings `images` to keep hold of the returned object, but stringified. Again, this can be of type-anything but in my use-case I'm stringifying the object result because I needed to pass this to my server (which will parse it) and save the data accordingly.
+
+```javascript
+for (let i = 0; i < files.length; i++) {
+  const formData = new FormData()
+  formData.append("upload_preset", uploadPreset)
+  formData.append("tags", "test-uploads")
+  formData.append("file", files[i])
+  // ....
+}
+```
+
+We iterate through our files (which is of type FileList or File[]) to individually upload them since this is the functionality provided by the client-side endpoint.
+
+You also need to use `new FormData()` as this is the expected request by the endpoint.
+
+Through this `formData` we are required to pass two things: `upload_preset` (provided by your account) and `file` (the file to be uploaded).
+
+You can pass in more data in `formData` depending in what you need (transformations and stuff). [Here's](https://cloudinary.com/documentation/image_upload_api_reference#unsigned_upload_parameters) the list you can refer to.
+
+```javascript
+//... uploadFiles body
+try {
+  const result = await fetch(url, {
+    method: "POST",
+    body: formData,
+  })
+  const image = await result.json()
+  images.push(
+    JSON.stringify({ url: image.secure_url, publicId: image.public_id })
+  )
+} catch (e) {
+  console.error(e)
+}
+```
+
+We then make a POST request via fetch API (or with your preferred service) and stringify the result that we want.
+
+```
+    return Promise.all(images);
+```
+
+We finally return the stringified objects stored in `images` when all the Promises are resolved.
+
+We can finally use our custom hook!
+
+```javascript
+// add types/interfaces accordingly
+// This is our ImageUploader component
+const ImageUploader = ({ name, label, uploadedImages }) => {
+  const { setFieldValue } = useFormikContext()
+  const { uploadFiles } = useCloudinary()
+  return (
+    <Dropzone
+      onDrop={async (files: File[]) => {
+        const images = await uploadFiles(files)
+        setFieldValue(name, [...uploadedImages, ...images])
+      }}
+    >
+      {({ getRootProps, getInputProps }) => (
+        <section>
+          <label htmlFor={name}>{label}</label>
+          <div {...getRootProps()}>
+            <input
+              {...getInputProps()}
+              name={name}
+              onChange={async e => {
+                if (e.target.files) {
+                  const images = await uploadFiles(e.target.files)
+                  setFieldValue(name, [...uploadedImages, ...images])
+                }
+              }}
+            />
+            <p>Drag and drop some files here, or click here to select files</p>
+          </div>
+        </section>
+      )}
+    </Dropzone>
+  )
+}
+```
+
+So I'm using Formik and Dropzone to handle my form and image uploads. We're using our `uploadFiles` method in the onDrop and onChange handlers of our Dropzone component.
+
+And that's it! You now have a very pluggable custom upload hook!
+
+A bonus tip!
+
+When you're using [cloudinary-react](https://github.com/cloudinary/cloudinary-react) to display your images/transformations, note that their `CloudinaryContext` is not really a React Context, but just a wrapper to provide the passed data to its children.
+
+Say you have this component
+
+```javascript
+<CloudinaryContext cloudName={cloudName} uploadPreset={uploadPreset}>
+  {/* children here */}
+  <Image />
+  <Transformation />
+  <SomeComponent />
+</CloudinaryContext>
+```
+
+And within `SomeComponent.tsx`
+
+```javascript
+// ERROR!
+// Ideally we expect data from CloudinaryContext
+const data = useContext(CloudinaryContext)
+```
+
+This isn't possible because CloudinaryContext here is just a wrapper, not fully a React Context. Refer to [cloudinary-react's](https://github.com/cloudinary/cloudinary-react) source code for more details. This bit me so hard it took some hours to figure out why useContext wasn't working. 😀
+
+Anyway! That's it! Hope this post helped you!
+
+Let me know on [twitter](https://twitter.com/carlojanea) if you have questions or corrections. Would totally appreciate it!
