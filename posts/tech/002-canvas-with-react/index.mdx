@@ -79,15 +79,12 @@ const resizeCanvas = useCallback(() => {
 }, [])
 
 // add a listener on resize
-useEffect(() => {
-  window.addEventListener("resize", resizeCanvas, false)
-
-  return () => window.removeEventListener("resize", resizeCanvas, false)
-}, [resizeCanvas])
-
 // call resizecanvas on mount
 useEffect(() => {
   resizeCanvas()
+  window.addEventListener("resize", resizeCanvas, false)
+
+  return () => window.removeEventListener("resize", resizeCanvas, false)
 }, [resizeCanvas])
 ```
 
@@ -119,7 +116,7 @@ const resizeCanvas = useCallback(() => {
 
 And that's it! Fully responsive canvas element.
 
-Tip: Make sure to debounce the `resizeCanvas` method by either using lodash/underscore's [debounce](https://underscorejs.org/) or implementing your [own!](https://dev.to/gabe_ragland/debouncing-with-react-hooks-jci)
+Tip: Make sure to debounce the `resizeCanvas` method by either using lodash/underscore's [debounce](https://underscorejs.org/) or this [useDebounce](https://www.npmjs.com/package/use-debounce) dedicated library. Or you could aso try implementing your [own!](https://dev.to/gabe_ragland/debouncing-with-react-hooks-jci).
 
 Otherwise it'll re-render and re-draw your canvas a lot and look glitchy.
 
