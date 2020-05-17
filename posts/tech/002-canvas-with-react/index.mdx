@@ -1,0 +1,128 @@
+---
+title: Integrating Canvas with React
+date: 2020-05-17
+slug: tech/canvas-with-react
+author: Carlo Janea
+image: ./images/steve-johnson.jpg
+coverSource: Steve Johnson
+coverAlt: a wall of painted with many colors
+excerpt: how to create a full width full height canvas element in react
+---
+
+So I was deciding on having an animated background on the landing page of some side project and decided to use canvas, instead of SVG since it's a lot more performant and less CPU process intensive (in terms of animating the number of objects in the screen).
+
+Here's a [link](https://css-tricks.com/when-to-use-svg-vs-when-to-use-canvas/) to a blog post comparing the two.
+
+This then led me to integrating canvas with my React application, and having it sized to the entire screen since it's for the landing page.
+
+### 1. Creating the component
+
+First we create the component that will serve us the "background" of our landing page. To begin, let's start with some styling.
+
+```
+// BackgroundCanvas.css
+.BackgroundCanvasContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+}
+```
+
+So I'm using external css for my styling but you can definitely use any CSS-in-JS alternatives. We style our container for our background to be `position: absolute` and to fit the entire screen. Make sure to add some z-index to wherever you want to put this background.
+
+We then proceed to creating our React component.
+
+```javascript
+import "./BackgroundCanvas.css"
+// BackgroundCanvas.tsx (typescript)
+const BackgroundCanvas = () => {
+  return (
+    <div className="BackgroundCanvasContainer">{/* canvas content here */}</div>
+  )
+}
+
+export default BackgroundCanvas
+```
+
+### 2. Creating the canvas and adding useRef()
+
+Next we add the canvas element inside `BackgroundCanvas` and associating a react ref with it so we can access it's 2D context easily.
+
+```javascript
+const canvasRef = useRef(null)
+
+// inside BackgroundCanvas
+<canvas ref={canvasRef}></canvas>
+```
+
+Now, why not just use an ID and access the 2D context via `getElementById`?
+
+You totally can, but it'll take more work compared to using refs. You'd have to check if the component has already loaded, and then have to check if that element with that ID has already been rendered. With react refs, it simply receives the mounted instance of the element when linked.
+
+Refs are also more natural to React in terms of referencing some element in the DOM. [Here's](https://medium.com/@rossbulat/react-using-refs-with-the-useref-hook-884ed25b5c29) a useful blogpost regarding refs.
+
+### 3. 100% Canvas Height and Width
+
+So why not just simply put a CSS value on the canvas element and set it height and width to 100%? This is because doing so would stretch the objects within it accordingly and creating a blurry canvas and a distorted grid. To set the proper grid size of the canvas, you have to set it via the `canvasContext.height` and `canvasContext.width`
+
+Let's do that but more responsive!
+
+```javascript
+// create a resizeCanvas method
+const resizeCanvas = useCallback(() => {
+  if (canvasRef.current) {
+    canvasRef.current.width = window.innerWidth
+    canvasRef.current.height = window.innerHeight
+  }
+}, [])
+
+// add a listener on resize
+useEffect(() => {
+  window.addEventListener("resize", resizeCanvas, false)
+
+  return () => window.removeEventListener("resize", resizeCanvas, false)
+}, [resizeCanvas])
+
+// call resizecanvas on mount
+useEffect(() => {
+  resizeCanvas()
+}, [resizeCanvas])
+```
+
+`resizeCanvas` is called on component mount, and on resize of the screen with our useEffect listener (with it's corresponding clean up function).
+
+And with that we now have a fully responsive canvas element that fits the entire screen!
+
+But where's our draw function? Let's add it to resizeCanvas
+
+```javascript
+const draw = useCallback(() => {
+  if (canvasRef.current) {
+    const context = canvasRef.current.getContext("2d")
+    const height = canvasRef.current.height
+    const width = canvasRef.current.width
+
+    // other canvas things
+  }
+}, [])
+
+const resizeCanvas = useCallback(() => {
+  if (canvasRef.current) {
+    canvasRef.current.width = window.innerWidth
+    canvasRef.current.height = window.innerHeight
+    draw()
+  }
+}, [draw])
+```
+
+And that's it! Fully responsive canvas element.
+
+Tip: Make sure to debounce the `resizeCanvas` method by either using lodash/underscore's [debounce](https://underscorejs.org/) or implementing your [own!](https://usehooks.com/useDebounce/)
+
+Otherwise it'll re-render and re-draw your canvas a lot and look glitchy.
+
+Let me know if there's something I can clarify on [twitter](https://twitter.com/carlojanea) or some corrections regarding the content above.
+
+Have a great one!

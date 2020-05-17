@@ -244,6 +244,10 @@ const PostTemplate = ({
             ul {
               margin-bottom: 1rem;
             }
+
+            h3 {
+              margin-bottom: 0.5rem;
+            }
           `}
         >
           <MDXRenderer>{body}</MDXRenderer>
