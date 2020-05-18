@@ -1,0 +1,83 @@
+---
+title: "Routes: Unmounting Out of Nowhere"
+date: 2020-05-18
+slug: tech/routes-and-props
+author: Carlo Janea
+image: ./images/javier-allegue.jpg
+coverSource: Javier Allegue
+coverAlt: a route helper silhouette over a pink sky
+excerpt: how routes unmount in webview with incorrect prop usage
+---
+
+So I was tasked to investigate this issue where a component displayed using [webview](https://github.com/react-native-community/react-native-webview) would unmount every time we interact with the file/camera dialog.
+
+It doesn't have to be a successful camera capture or a selected file within the gallery, any interaction like closing the dialog would unmount the component and re-initialize the state.
+
+This was a problem because we thought we handled this problem by saving and restoring the state on certain activity lifecycles. (more on that [here](https://developer.android.com/guide/components/activities/activity-lifecycle))
+
+So it was a big bummer!
+
+We narrowed down the problem by verifying that the state was actually saved and restored between activity lifecycles, and that not the entire component holding the routes was unmounted, just this particular component.
+
+You see the unmounting component was written this way:
+
+```javascript
+<Route
+  path="/some-path"
+  component={props => (
+    <SomeComponent {...props} someDerivedProp={someDerivedProp} />
+  )}
+/>
+```
+
+### The Problem
+
+Passing a function to `component` actually creates a new component with `React.createElement` and thus, remounts the component!
+
+From the `react-router` [docs](https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/Route.md):
+
+> When you use component (instead of render or children, below) the router uses React.createElement to create a new React element from the given component. That means if you provide an inline function to the component prop, you would create a new component every render. This results in the existing component unmounting and the new component mounting instead of just updating the existing component.
+
+### Why isolate this issue for webview only?
+
+Yes, I recognize that this is problematic for the web too, but most of the time you can get away with this on the web because you don't _usually_ revisit routes repeatedly during specific lifecycles. But that doesn't mean you should use it! Still super against it.
+
+An issue with webview was that although we saved and restored state accordingly (during activity onPause and onRestore), the unexpected remount reinitialized the component's state and caused some major problems. And that just needed to be emphasized.
+
+### The fix
+
+Simply use the `render` or `children` function props of the `<Route />` component.
+
+For render:
+
+```javascript
+<Route
+  path="/some-path"
+  render={() => <SomeComponent someDerivedProp={someDerivedProp} />}
+/>
+```
+
+You can do more complex logic with the render prop than the one showed above. Check the [docs](https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/Route.md) for more details.
+
+And for the `children` prop, same function with `render` but the only difference is `render` gets called when the path matches, but `children` gets called even if the path isn't a match.
+
+```javascript
+<Route
+  path="/home"
+  cnildren={({ match }) => (
+    <Container backgroundColor={match ? "green" : "red"}>
+      <SomeComponent />
+    </Container>
+  )}
+/>
+```
+
+You'd think `match` is an object that contains `params` and etc., but when used within the children prop, and the route's path didn't match, it'll return `null` immediately for `match`.
+
+A lot of options here, so don't use component as a function!
+
+Alright, that's it. Hope that helped ya, as much as this'll help me remember my mistake! 😁
+
+Let me know on [twitter](https://twitter.com/carlojanea) for questions or corrections.
+
+See ya!
