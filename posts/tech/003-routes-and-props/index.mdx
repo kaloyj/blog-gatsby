@@ -40,9 +40,9 @@ From the `react-router` [docs](https://github.com/ReactTraining/react-router/blo
 
 ### Why isolate this issue for webview only?
 
-Yes, I recognize that this is problematic for the web too, but most of the time you can get away with this on the web because you don't _usually_ revisit routes repeatedly during specific lifecycles. But that doesn't mean you should use it! Still super against it.
+Yes, I recognize that this is problematic for the web too, but most of the time you can get away with this on the web because you don't _usually_ re-render main parent routes repeatedly that often during specific lifecycles. But that doesn't mean you should use it! Still super against it.
 
-An issue with webview was that although we saved and restored state accordingly (during activity onPause and onRestore), the unexpected remount reinitialized the component's state and caused some major problems. And that just needed to be emphasized.
+An issue with webview was that although we saved and restored state accordingly (during activity onPause and onResume), the unexpected remount reinitialized the component's state and caused some major problems. And that just needed to be emphasized.
 
 ### The fix
 
@@ -57,7 +57,7 @@ For render:
 />
 ```
 
-You can do more complex logic with the render prop than the one showed above. Check the [docs](https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/Route.md) for more details.
+You can do more complex logic with the render prop than the one shown above. Check the [docs](https://github.com/ReactTraining/react-router/blob/master/packages/react-router/docs/api/Route.md) for more details.
 
 And for the `children` prop, same function with `render` but the only difference is `render` gets called when the path matches, but `children` gets called even if the path isn't a match.
 
@@ -65,7 +65,7 @@ And for the `children` prop, same function with `render` but the only difference
 <Route
   path="/home"
   cnildren={({ match }) => (
-    <Container backgroundColor={match ? "green" : "red"}>
+    <Container backgroundColor={match ? "green" : ""}>
       <SomeComponent />
     </Container>
   )}
@@ -74,7 +74,7 @@ And for the `children` prop, same function with `render` but the only difference
 
 You'd think `match` is an object that contains `params` and etc., but when used within the children prop, and the route's path didn't match, it'll return `null` immediately for `match`.
 
-A lot of options here, so don't use component as a function!
+A lot of options here, so don't use the component prop as a function!
 
 Alright, that's it. Hope that helped ya, as much as this'll help me remember my mistake! 😁
 
