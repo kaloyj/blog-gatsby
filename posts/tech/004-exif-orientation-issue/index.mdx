@@ -1,0 +1,156 @@
+---
+title: Camera Capture Orientation with Exif
+date: 2020-05-22
+slug: tech/exif-orientation
+author: Carlo Janea
+image: ./images/jakob-owens.jpg
+coverSource: Jakob Owens
+coverAlt: a camera thrown mid-air by a hand over a pink background
+excerpt: fixing unwanted rotation of images when uploaded
+---
+
+If you've ever tried to handle a component that uses a file input for image uploads, then you might have encountered the issue where using the camera directly for upload (mobile) would lead to a rotated image, mostly from portrait to landscape.
+
+### The Problem
+
+Each device (android, iOS, and etc) has their own unique way of handling photo metadata. This includes geolocation, basic information, and exif. Having multiple behaviors of generating EXIF data is, long story short, difficult. (at least in my experience, since there are too many cases to consider) This results to the problem stated above where some images would get rotated incorrectly to the wrong orientation.
+
+### What is EXIF again?
+
+EXIF, in the simplest sense, is data used to provide context regarding the photograph it is attached to.
+This data may be technical photography settings like exposure, aperture, shutter speed, and etc. It may also include orientation (which in our case is what we need), dates, and other useful stuff for processing such image. For more details regarding exif, check out this explanatory [article](https://photographylife.com/what-is-exif-data)
+
+### The Solution
+
+I used the [blumeimp-load-image](https://github.com/blueimp/JavaScript-Load-Image) library to handle the transformations. They have an option to transform an image to a [canvas](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial) element and then within that canvas, perform such transformations needed. This may be scaling, rotating, cropping, and etc., all depending on what you specified.
+
+Install it through npm (we use 5.12.0, or latest as of date of writing):
+
+```
+npm install blueimp-load-image
+```
+
+Then I create a reusable `fixOrientation.js` file:
+
+```javascript
+import loadImage from "blueimp-load-image"
+
+const fixOrientation = file => {
+  //... do stuff here
+}
+
+export default fixOrientation
+```
+
+We now have a function we can use if ever we need some orientation fixing during a file upload. To continue, let's see how we can automatically fix orientation issues with `loadImage`
+
+```javascript
+const fixOrientation = file => {
+  return new Promise(resolve =>
+    loadImage.parseMetadata(file, data => {
+      loadImage(
+        file,
+        canvas => {
+          if (data.exif)
+            loadImage.writeExifData(data.imageHead, data, "Orientation", 1)
+
+          canvas.toBlob(blob => {
+            loadImage.replaceHead(blob, data.imageHead, replacedBlob => {
+              resolve(
+                Object.assign(replacedBlob, {
+                  name: file.name,
+                  // and any other attribute
+                  // you want with the returned blob
+                })
+              )
+            })
+          })
+        },
+        {
+          orientation: true,
+          canvas: true,
+        }
+      )
+    })
+  )
+}
+```
+
+So what's happening here? Let's break it down. We're returning a Promise so we can simply use async/await when calling `fixOrientation` and have a straight forward implementation: call `fixOrientation` and wait for it to return something before displaying it.
+
+We could have also just written the `fixOrientation` as `async` and that would have worked the same way – either way, it achieves the same thing, just different implementations and tradeoffs with functionality and readability. All up to you and what you're comfortable with.
+
+Inside our promise we have this line:
+
+```javascript
+loadImage.parseMetadata(file, data => {
+    // ...
+}
+```
+
+What this does is call the method within `loadImage` to parse associated metadata within the file we passed to `fixOrientation` and pass the result to `data`. So data now can access all sorts of things like exif, imageHead, and other cool thingies. Check them out and see what properties you are interested with.
+
+Now within `parseMetadata`, we call `loadImage` and pass a file, a callback, and a config option.
+
+```javascript
+loadImage(
+  file,
+  canvas => {
+    // callback body
+  },
+  {
+    orientation: true,
+    canvas: true,
+  }
+)
+```
+
+What `orientation: true` does is it signals `loadImage` to fix the the orientation of the image based on the exif data associated within it. There are other options other than `true`, check them out [here](https://github.com/blueimp/JavaScript-Load-Image#orientation)
+
+Then `canvas: true` simply just tells `loadImage` that we want the file to be returned as a canvas element. Otherwise it'll return the original type which is an image. More [here](https://github.com/blueimp/JavaScript-Load-Image#canvas)
+
+Now let's go to the callback body.
+
+```javascript
+if (data.exif) loadImage.writeExifData(data.imageHead, data, "Orientation", 1)
+
+// ... callback body
+```
+
+What we're doing here is adding a value of `1` to the image's `'Orientation'` tag inside `data.imageHead` so that whatever transformations has been done to it, it'll be reset to the top. For exif orientation value equivalence (like 1 = top), you may refer to this [helpful guide](http://sylvana.net/jpegcrop/exif_orientation.html)
+
+Now why do we have to do this when we've already set `orientation: true`? This allows clearing of previous transformations and so that `loadImage` can rotate it accordingly based on its `exif orientation`. If we didn't, then the rotation would be incorrect. (This happened with Samsung devices, based from my tests)
+
+```javascript
+// ... canvas body
+
+canvas.toBlob(blob => {
+  loadImage.replaceHead(blob, data.imageHead, replacedBlob => {
+    resolve(
+      Object.assign(replacedBlob, {
+        name: file.name,
+        // and any other attribute
+        // you want with the returned blob
+      })
+    )
+  })
+})
+```
+
+To proceed, we convert our canvas image with [toBlob](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob) so we can process certain image attribute correctly.
+
+Now why did we have to use `canvas: true` if we're just using `toBlob` again? This isn't actually necessary since setting `orientation: true` automatically sets `canvas: true` because it is needed for orientation transformations, but this is just a matter of readability and specifying what is happening behind the scenes.
+
+We then called `replaceHead` so that if ever `data.exif` existed and we've written something new to `imageHead`, we'll be able to pass that through our image blob.
+
+We then have a callback that allows us to do whatever we want with the returned `replacedBlob`, in my case we needed the file name so we just included that within `replacedBlob`.
+
+And with all that, you now have a function to fix orientation issues caused by exif handling!
+
+You can now pass down the corrected `blob` to your servers that handle your image upload and display it accordingly.
+
+Let me know if you need help with this topic and I'll try to help the best I can on [twitter](https://twitter.com/carlojanea).
+
+Hit me up also for corrections and clarifications, would totally appreciate it!
+
+Go get them exif issues!
