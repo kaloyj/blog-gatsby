@@ -1,0 +1,97 @@
+---
+title: Nested Iframes and Permissions
+date: 2020-06-10
+slug: tech/iframes-and-permissions
+author: Carlo Janea
+image: ./images/chor-tsang.jpg
+coverSource: Chor Tsang
+coverAlt: looking up a square multi-level building with an open middle
+excerpt: figuring out how to pass permissions across iframes
+---
+
+This issue is mainly for the Chrome browser (starting Chrome 60) since you have to explicitly describe what kind of permissions a user can grant for certain privacy settings like camera, microphones, screen capture, and [a lot more settings.](https://developer.mozilla.org/en-US/docs/Web/HTTP/Feature_Policy)
+
+To do this, you'd have to do the following:
+
+```
+<iframe src="https://somelink.com" allow="camera; microphone; display-capture" />
+```
+
+Emphasis on the `allow` attribute
+
+Other browsers handle them internally, or if not, require you to do it manually via settings, as far as i know.
+
+### So what's the issue exactly?
+
+The issue is when you have nested iframes. Say **iframe P** (parent) has an inner iframe, **iframe C** (child) that have features that require the camera and microphone.
+
+**iframe C**'s setup would look like this:
+
+```
+// iframe C (child)
+<iframe src="https://some-origin.com" allow="camera; microphone; display-capture"/>
+```
+
+No problem seen here, _yet_. We notify chrome that with this iframe, we will ask permissions from users to access certain features (camera, microphone, and screen capture).
+
+Now naturally, we'd think for **iframe P** to have the same permissions, we'd configure it the same way as **iframe C**.
+
+```
+// iframe P (parent)
+<iframe
+  src="https://some-origin-that-points-to-iframe-c.com"
+  allow="camera; microphone; display-capture"
+/>
+```
+
+We refer to it as _parent_ since within the `src` link that it points to, it will render **iframe C** (child).
+
+### The Problem
+
+The problem here is the assumption made above. If you didn't have this assumption, then you would have saved hours of your life compared to mine. 😄
+
+**iframe P** will not have, or even be asked to grant permissions to certain privacy settings. Why? This is caused by having two different origins, and the defaults within the `allow` attribute value.
+
+```
+// this statement
+allow="camera; microphone; display-capture"
+
+// will evaluate to this
+allow="camera 'self'; microphone 'self'; display-capture 'self'"
+```
+
+What does the `self` default value mean here?
+
+Self, from the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy/camera), will allow access to this document, and all nested (child) browsing context within the **same origin**.
+
+This explains why it will work if **iframe C** was standalone (no parent), because when we grant access to certain settings, we are operating under the origin we granted access to. (which is `https://some-origin`)
+
+This is different when we have a parent iframe, since we are operating under that parent's origin, in our case that'll be `https://some-origin-that-points-to-iframe-c`, and the permission was granted to `https://some-origin`
+
+### The Solution
+
+In cases where you can adjust your code to change where you request for access over to the parent, so you don't have to change `allow`'s value, then you could do that.
+
+But in cases where **iframe C** (the child) has to be the one to ask for permissions, you only need to change the value within `allow`.
+
+```
+// change this statement
+allow="camera; microphone; display-capture"
+
+// to this
+allow="camera *; microphone *; display-capture *"
+```
+
+The `*` value will allow all origins to ask for permissions for certain services. So now, even if **iframe C** with the origin of `https://some-origin` which is different from the parent's, can now ask for the user's permission for the camera, the microphone, or whatever you need!
+
+And in case you're worried for security purposes, then the `*` value can be changed to the origin of your specific site
+
+```
+allow="camera <allowlist>; microphone <allowlist>; display-capture <allowlist>"
+```
+
+Hope that helped you! This would have saved me 2 hours of searching around solutions. 😅
+
+Hit me up on [twitter](https://twitter.com/carlojanea) if you have questions or corrections. Would totally appreciate it.
+
+See you!
