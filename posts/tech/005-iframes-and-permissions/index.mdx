@@ -29,7 +29,9 @@ The issue is when you have nested iframes. Say **iframe P** (parent) has an inne
 
 ```
 // iframe C (child)
-<iframe src="https://some-origin.com" allow="camera; microphone; display-capture"/>
+// assume this has origin of https://some-origin
+// or the app that renders this iframe has the said origin above
+<iframe src="https://some-link-that-needs-permission.com" allow="camera; microphone; display-capture"/>
 ```
 
 No problem seen here, _yet_. We notify chrome that with this iframe, we will ask permissions from users to access certain features (camera, microphone, and screen capture).
@@ -38,6 +40,7 @@ Now naturally, we'd think for **iframe P** to have the same permissions, we'd co
 
 ```
 // iframe P (parent)
+// assume this has origin of https://different-parent-origin
 <iframe
   src="https://some-origin-that-points-to-iframe-c.com"
   allow="camera; microphone; display-capture"
@@ -66,7 +69,7 @@ Self, from the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Head
 
 This explains why it will work if **iframe C** was standalone (no parent), because when we grant access to certain settings, we are operating under the origin we granted access to. (which is `https://some-origin`)
 
-This is different when we have a parent iframe, since we are operating under that parent's origin, in our case that'll be `https://some-origin-that-points-to-iframe-c`, and the permission was granted to `https://some-origin`
+This is different when we have a parent iframe, since we are operating under that parent's origin, in our case that'll be `https://different-parent-origin`, and the permission was granted to `https://some-origin`
 
 ### The Solution
 
