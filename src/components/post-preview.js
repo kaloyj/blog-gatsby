@@ -25,17 +25,16 @@ const PostPreview = ({ post }) => {
         overflow: hidden;
         margin: 1rem 0;
         position: relative;
-        box-shadow: 10px 10px 44px -12px rgba(0, 27, 90, 1),
-          2px 2px 8px -3px rgba(0, 27, 90, 1);
+        box-shadow: 10px 10px 44px -12px rgba(23, 18, 25, 1),
+          2px 2px 8px -3px rgba(23, 18, 25, 1);
 
-        @media screen and (min-width: 1200px) {
-          flex: 0 0 44%;
-          margin-left: 4%;
+        @media screen and (min-width: 1024px) {
+          flex: 0 0 48%;
         }
 
         @media screen and (min-width: 1920px) {
-          margin: 1.5rem 0 1.5rem 4%;
-          flex: 0 0 28%;
+          margin: 1.5rem 0;
+          flex: 0 0 32%;
         }
       `}
     >
@@ -63,11 +62,11 @@ const PostPreview = ({ post }) => {
             height: 100%;
             top: 0;
             left: 0;
-            background: rgb(0, 27, 90);
+            background: rgb(23, 18, 25);
             background: linear-gradient(
               180deg,
-              rgba(0, 27, 90, 0.1334908963585434) 0%,
-              rgba(0, 27, 90, 1) 100%
+              rgba(23, 18, 25, 0.1334908963585434) 0%,
+              rgba(23, 18, 25, 1) 100%
             );
           `}
         ></div>

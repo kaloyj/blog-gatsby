@@ -1,154 +1,90 @@
 import React from "react"
 import { css } from "@emotion/core"
-import Img from "gatsby-image"
-import Background from "./assets/blog-bg.svg"
 import { COLOR_SCHEME } from "../layout"
-import useMainPhoto from "../../hooks/useMainPhoto"
 
 const Hero = () => {
-  const { fluid: coverPhoto } = useMainPhoto()
   return (
     <div
       css={css`
-        height: 80vh;
+        height: 60vh;
         width: 100%;
         position: relative;
+        border: 1px solid black;
+        display: flex;
+        flex-flow: row wrap;
 
         @media only screen and (min-width: 768px) {
-          height: 60vh;
+          height: 40vh;
         }
 
         @media screen and (min-width: 1200px) {
-          height: 60vh;
+          height: 42.5vh;
+        }
+
+        @media screen and (min-width: 1920px) {
+          margin-bottom: 1rem;
         }
       `}
     >
-      <Background
-        preserveAspectRatio="xMidYMid slice"
-        css={css`
-          position: absolute;
-          top: 0;
-          left: 0;
-        `}
-      ></Background>
-
       <div
         css={css`
           display: flex;
           flex-flow: row wrap;
           align-content: center;
-          width: 92%;
+          flex: 0 0 92%;
           margin-left: 4%;
           height: 100%;
           align-items: center;
 
-          @media only screen and (min-width: 768px) {
-            justify-content: center;
+          p {
+            color: ${COLOR_SCHEME.black}
+            flex-basis: 90%;
+            line-height: 1.5rem;
+          }
 
+          @media only screen and (min-width: 768px) {
             h1,
             h3 {
               text-align: center;
+            }
+
+            p {
+              flex-basis: 80%;
+              font-size: 1.75rem;
+              line-height: 2.25rem;
             }
           }
 
           @media only screen and (min-width: 1920px) {
             width: 70%;
-            margin-left: 15%;
+
+            p {
+              font-size: 2rem;
+              line-height: 2.5rem;
+            }
           }
         `}
       >
-        <div
+        <p>
+          A place where I deconstruct, investigate, and explain things I'm
+          fascinated, curious, and troubled about in life, tech, and all the
+          randomness in between.
+        </p>
+
+        <p
           css={css`
-            height: 100px;
-            width: 100px;
-            border: 3px solid ${COLOR_SCHEME.accent};
-            border-radius: 50%;
-            overflow: hidden;
-            z-index: 1;
-
-            @media only screen and (min-width: 768px) {
-              height: 150px;
-              width: 150px;
-            }
-
-            @media screen and (min-width: 1200px) {
-              height: 120px;
-              width: 120px;
-            }
+            margin-top: 1rem;
           `}
         >
-          <Img
+          Welcome to{" "}
+          <span
             css={css`
-              height: 100%;
-              width: 100%;
-              object-fit: cover;
-            `}
-            fluid={coverPhoto}
-            alt="carlo janea's face"
-            fadeIn={true}
-          />
-        </div>
-
-        <div
-          css={css`
-            flex: 0 0 100%;
-            margin: 1.25rem auto;
-            display: flex;
-            z-index: 1;
-
-            @media only screen and (min-width: 768px) {
-              justify-content: center;
-            }
-          `}
-        >
-          <h1
-            css={css`
-              margin-left: 0.3rem;
-              flex-basis: 60%;
-              color: white;
-              text-transform: uppercase;
               font-weight: 700;
-              letter-spacing: 0.1rem;
-
-              @media only screen and (min-width: 768px) {
-                flex-basis: 80%;
-                font-size: 2.5rem;
-                letter-spacing: 0.175rem;
-              }
-
-              @media screen and (min-width: 1200px) {
-                flex-basis: 60%;
-                padding: 0 10%;
-              }
             `}
           >
-            Blogs and other blunders
-          </h1>
-        </div>
-
-        <h3
-          css={css`
-            flex-basis: 90%;
-            color: white;
-            font-weight: 500;
-            margin-left: 0.3rem;
-            line-height: 1.5rem;
-            z-index: 1;
-
-            @media only screen and (min-width: 768px) {
-              flex-basis: 70%;
-              font-size: 1.5rem;
-              line-height: 2rem;
-            }
-
-            @media screen and (min-width: 1200px) {
-              flex-basis: 60%;
-            }
-          `}
-        >
-          I'm Carlo Janea, a front-end engineer, and I write things  on tech,
-          life, and just about anything.
-        </h3>
+            1px-solid-black.
+          </span>
+        </p>
       </div>
     </div>
   )

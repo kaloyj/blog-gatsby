@@ -34,10 +34,12 @@ const Filter = ({ currentFilter, setFilter }) => {
             margin-right: 0.5rem;
             font-weight: ${value === currentFilter ? "700" : "400"};
             padding: ${value === currentFilter ? "0.25rem 0.5rem" : 0};
-            color: ${value === currentFilter ? "white" : COLOR_SCHEME.darkBlue};
+            color: ${value === currentFilter
+              ? COLOR_SCHEME.white
+              : COLOR_SCHEME.black};
             background-color: ${value === currentFilter
-              ? COLOR_SCHEME.accent
-              : "white"};
+              ? COLOR_SCHEME.black
+              : COLOR_SCHEME.white};
 
             transition: all 0.2s ease;
             text-transform: capitalize;

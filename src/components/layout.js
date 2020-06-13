@@ -8,8 +8,10 @@ export const COLOR_SCHEME = {
   darkBlue: "#001B5A",
   lightestBlue: "#E3EDF4",
   codeBackground: "#E6E6E6",
+  white: "#fbfef9",
+  black: "#171219",
 }
-const Layout = ({ children, backgroundColor = "#fff" }) => {
+const Layout = ({ children, backgroundColor = COLOR_SCHEME.white }) => {
   return (
     <>
       <Global
@@ -22,7 +24,7 @@ const Layout = ({ children, backgroundColor = "#fff" }) => {
           html,
           body {
             margin: 0;
-            font-family: "DM Sans", -apple-system, BlinkMacSystemFont,
+            font-family: "Quicksand", -apple-system, BlinkMacSystemFont,
               "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             font-size: 18px;
             line-height: 1.4;
@@ -33,7 +35,7 @@ const Layout = ({ children, backgroundColor = "#fff" }) => {
             h4,
             h5,
             h6 {
-              color: ${COLOR_SCHEME.darkBlue};
+              color: ${COLOR_SCHEME.black};
               line-height: 1.1;
             }
           }

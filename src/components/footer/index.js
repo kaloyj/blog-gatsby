@@ -33,7 +33,7 @@ const Footer = () => (
     css={css`
       height: 20vh;
       margin-top: 2rem;
-      background-color: ${COLOR_SCHEME.darkBlue};
+      background-color: ${COLOR_SCHEME.black};
       color: white;
       text-align: center;
       display: flex;

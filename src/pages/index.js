@@ -7,6 +7,8 @@ import PostPreview from "../components/post-preview"
 import usePosts from "../hooks/usePosts"
 import { useDebounce } from "../hooks/useDebounce"
 import Filter, { FILTERS } from "../components/filter"
+import ContentContainer from "../components/content-container"
+import NavBar from "../components/navbar"
 
 const IndexPage = () => {
   const [searchKey, setSearchKey] = useState("")
@@ -26,26 +28,10 @@ const IndexPage = () => {
   return (
     <Layout>
       <SEO />
-      <Hero></Hero>
-      <div
-        css={css`
-          width: 90%;
-          margin-left: 5%;
-          margin: 1rem auto;
-          display: flex;
-          flex-flow: row wrap;
+      <ContentContainer>
+        <NavBar></NavBar>
+        <Hero></Hero>
 
-          @media only screen and (min-width: 768px) {
-            margin-left: 25%;
-            width: 50%;
-          }
-
-          @media screen and (min-width: 1200px) {
-            margin-left: 15%;
-            width: 70%;
-          }
-        `}
-      >
         <div
           css={css`
             display: flex;
@@ -54,11 +40,7 @@ const IndexPage = () => {
             flex-flow: row wrap;
             align-items: center;
             justify-content: space-between;
-
-            @media screen and (min-width: 1200px) {
-              flex: 0 0 92%;
-              margin-left: 4%;
-            }
+            margin-top: 1rem;
           `}
         >
           <div
@@ -85,7 +67,7 @@ const IndexPage = () => {
                 background-color: #e8e8e8;
                 height: 1.75rem;
                 padding-left: 0.75rem;
-                font-family: "DM Sans";
+                font-family: "Quicksand";
               `}
               value={searchKey}
               onChange={e => setSearchKey(e.target.value)}
@@ -93,6 +75,7 @@ const IndexPage = () => {
           </div>
           <Filter currentFilter={filter} setFilter={setFilter}></Filter>
         </div>
+
         {debouncedSearchKey && filteredPosts.length === 0 ? (
           <h3
             css={css`
@@ -105,11 +88,23 @@ const IndexPage = () => {
             No posts found.
           </h3>
         ) : (
-          filteredPosts.map(post => (
-            <PostPreview key={post.slug} post={post}></PostPreview>
-          ))
+          <div
+            css={css`
+              flex: 0 0 100%;
+              display: flex;
+              flex-flow: row wrap;
+
+              @media screen and (min-width: 1024px) {
+                justify-content: space-between;
+              }
+            `}
+          >
+            {filteredPosts.map(post => (
+              <PostPreview key={post.slug} post={post}></PostPreview>
+            ))}
+          </div>
         )}
-      </div>
+      </ContentContainer>
     </Layout>
   )
 }

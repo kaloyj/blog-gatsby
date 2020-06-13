@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `Blog | Carlo Janea`,
-    description: `I'm Carlo Janea, a front end engineer in Cebu, Philippines. These are my blogs on tech, life stories, and anything I've thought upon.`,
+    description: `I'm Carlo Janea, a front end engineer in Cebu, Philippines. These are my blogs on tech, life stories, and all the randomness in between.`,
     author: `@carlojanea`,
   },
   plugins: [
@@ -18,20 +18,20 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `carlo-janea-blog`,
+        short_name: `cjanea-blog`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
+        background_color: `#fbfef9`,
+        theme_color: `#171219`,
         display: `minimal-ui`,
-        icon: `src/images/carlo-favicon.svg`, // This path is relative to the root of the site.
+        icon: `src/images/favicon.png`, // This path is relative to the root of the site.
       },
     },
     "gatsby-plugin-emotion",
     {
       resolve: `gatsby-plugin-google-fonts`,
       options: {
-        fonts: ["DM Sans:400,500,700"],
+        fonts: ["Quicksand:400,500,700"],
         display: "swap",
       },
     },
