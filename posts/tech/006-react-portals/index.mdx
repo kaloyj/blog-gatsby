@@ -1,0 +1,126 @@
+---
+title: React Portals, and some confusion
+date: 2020-06-23
+slug: tech/react-portals
+author: Carlo Janea
+image: ./images/farhan-azam.jpg
+coverSource: Farhan Azam
+coverAlt: a ring of fire spinning to create a portal figure
+excerpt: clarifying what goes on within a react portal
+---
+
+So during this week, I was tasked to do an overlay (or a modal) and decided to use React's [portal](https://reactjs.org/docs/portals.html) feature.
+
+It was cool and all, until the confusion kicked in. Everything worked perfectly (with the docs' help), but something was off.
+
+I didn't fully understand what was going on with what I was using!
+
+So as usual, here's my train of thought explaining to myself how portals work.
+
+### Portals in Code
+
+From the docs, translated to using hooks, here's what a portal would look like
+
+```javascript
+// assuming you have a <div id="root-id" /> in your app
+const modalRoot = document.getElementById("root-id")
+
+const Portal = () => {
+  const el = useRef(null)
+  if (!el.current) el.current = document.createElement("div")
+
+  useEffect(() => {
+    modalRoot.appendChild(el.current)
+    return () => modalRoot.removeChild(el.current)
+  }, [])
+
+  return React.createPortal(children, el.current)
+}
+```
+
+If you were like me, at first glance (or twenty), the code above wouldn't seem so straight-forward.
+
+What's really happening here? Do we append child first then create the portal? Why do we need to create a separate element `el` and not utilize `modalRoot` in `createPortal`?
+
+All these questions were running around in my head making me more confused than before.
+
+### Portals, deeper
+
+Let's break it down on how react processes our code above with the help from this useful lifecycle [cheatsheet](https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/).
+
+First would be the one outside the component itself.
+
+```javascript
+const modalRoot = document.getElementById("root-id")
+```
+
+No mystery there. Next would be where the lifecycle cheatsheet would matter.
+We don't have a constructor so mounting would be first.
+
+```javascript
+const el = useRef(null)
+if (!el.current) el.current = document.createElement("div")
+
+return React.createPortal(children, el.current)
+```
+
+As you can see we're skipping the `useEffect` since that equals to componentDidMount and willUnmount. This will happen after mounting.
+
+What happened here is we created a ref `el` and if it didn't have a `current` yet (or it hasn't been assigned to anything), then we assign a div element to it.
+
+We then use `el` to create a portal.
+
+But all we have really is a portal contained by `el.current`. We haven't really _entered_ the portal. To enter (and exit), we proceed with our `useEffect`
+
+```javascript
+useEffect(() => {
+  modalRoot.appendChild(el.current)
+  return () => modalRoot.removeChild(el.current)
+}, [])
+```
+
+We simply append it to our modalRoot to enter after component mount, and remove the `el.current` on component unmount.
+
+Tada! We have a fully functional portal!
+
+You can use it via:
+
+```javascript
+<Portal>// stuff you want to transport to modalRoot</Portal>
+```
+
+### But why not use modalRoot directly?
+
+```javascript
+const modalRoot = document.getElementById("root-id")
+const Portal = () => {
+  return React.createPortal(children, modalRoot)
+}
+```
+
+With this, we immediately create a portal to the root and not worry about mounting and unmounting. Right?
+
+Same thoughts here. Every demo or blog I've read always had an unnecessary div that will be appended to modalRoot.
+
+From experience, using modalRoot directly doesn't really change the experience. I can still use multiple portal instances of `<Portal />`, and mounting/unmounting still works perfectly fine.
+
+Like any other portal popup situation, I would have to call it this way:
+
+```javascript
+const SomeComponentThatNeedsPortals = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  return isOpen ? (
+    <Portal>// some children to mount within the portal here</Portal>
+  ) : null
+}
+```
+
+Unmounting/mounting of the portal content is already handled here - using modalRoot directly or not.
+
+I guess it all falls to convention and getting used to? But personally I prefer using `modalRoot` directly. It's lesser to process mentally, and it's pretty straight-forward.
+
+Alright, that's it for portals! As always, corrections, questions, and clarifications are very open through [twitter](https://twitter.com/carlojanea)
+
+Would totally appreciate it! Especially corrections regarding using `modalRoot` directly.
+
+See you on the next one!
