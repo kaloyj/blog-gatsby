@@ -1,0 +1,78 @@
+---
+title: React Keys, and a blindspot
+date: 2020-11-18
+slug: tech/react-keys
+author: Carlo Janea
+image: ./images/jozsef-hocza.jpg
+coverSource: Jozsef Hocza
+coverAlt: few keys over a white background
+excerpt: how I overlooked one important rule with react keys
+---
+
+Well technically, my blindspot.
+
+I was tasked to handle a very specific case/scenario where keys were involved, and it really took me two hours and a few hacky solutions to figure out the root of the problem.
+
+### Too long, won't read
+
+Use **unique and consistent** strings as keys, especially across re-renders.
+
+### Some Background
+
+Across my 2 years of React experience, I've always just thought of keys as something unique, something to identify the element across re-renders, so React can efficiently pinpoint the location in the react tree where things have changed and work on that said tree location accordingly. ([Reconciliation](https://reactjs.org/docs/reconciliation.html))
+
+### The Problem
+
+Cool, nothing wrong there.
+
+_Yet._
+
+I was tasked to handle this case/scenario where a form was operating on a piece of data, that generates a new `id` every time it got saved. This was for the purpose of having some sense of history and logging for said data.
+
+Think of it this way _(a very contrived example)_
+
+```javascript
+const SomeParentComponent = ({ itemsThatChangeOnSave }) => (
+  <div>
+    <h1>A list of things that change on save</h1>
+    {itemsThatChangeOnSave.map(item => (
+      <div key={item.id}>
+        <ItemDetails item={item} />
+        <EditSettingsPopup item={item} />
+      </div>
+    ))}
+  </div>
+)
+```
+
+`item.id` as key is always unique, but since every time we save it, it changes, the whole purpose of a key during react's reconciliation phase, gets lost.
+
+This might not seem very important in most cases, but in cases where state is involved within `ItemDetails` or in `EditSettingsPopup` where it has a nested popup that will save `item` and return to the main `EditSettingsPopup` then it will be a problem.
+
+All of the state will be flushed or reset since react recognizes this as a different element in the react tree, which causes an unmount of the old key, and a mount of the new key scenario.
+
+### The solution
+
+Use a key that is **unique and consistent** across re-renders.
+
+In our case, since we're generating a new record for each save of `item`, we made sure that there's a property that binds all the `item` records together.
+
+And so that common property is what I used now as key.
+
+And all my problems are gone!
+
+Just 1-2 hours of wacking my brain on why state is resetting, and finding alternatives to nested popups, just to be bitten by react keys!
+
+A total blindspot.
+
+Not time wasted, though. It was definitely a solidifying experience.
+
+Let me know if I missed something or I'm explaining something incorrectly on [twitter](https://twitter.com/carlojanea)
+
+Will totally appreciate it!
+
+Thanks for sticking by! I know it has been quite a few months since my last post, but know that I'm learning and keeping myself sane and healthy during all these pandemic troubles.
+
+Hoping for the best for you, too!
+
+See you on the next one.
