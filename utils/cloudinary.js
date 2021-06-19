@@ -22,9 +22,9 @@ export const getSocialImage = ({
   textColor = "171219",
   titleFontSize = 76,
   taglineFontSize = 32,
-  version = process.env.CLOUDINARY_DEFAULT_VERSION,
-  cloudName = process.env.CLOUDINARY_DEFAULT_CLOUDNAME,
-  imagePublicID = process.env.CLOUDINARY_SOCIAL_CARD_ID,
+  version = process.env.GATSBY_CLOUDINARY_DEFAULT_VERSION,
+  cloudName = process.env.GATSBY_CLOUDINARY_DEFAULT_CLOUDNAME,
+  imagePublicID = process.env.GATSBY_CLOUDINARY_SOCIAL_CARD_ID,
   cloudinaryUrlBase = "https://res.cloudinary.com",
 } = {}) => {
   const imageConfig = [
