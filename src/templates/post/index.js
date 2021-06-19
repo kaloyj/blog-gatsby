@@ -63,13 +63,15 @@ const PostTemplate = ({
     taglineTopOffset: taglineTopOffset || undefined,
   })
 
+  const seoImageAlt = `${title} - ${excerpt}`
+
   return (
     <Layout>
       <SEO
         title={`Blog | ${title}`}
         description={excerpt}
         image={image}
-        imageAlt={coverAlt}
+        imageAlt={seoImageAlt}
         pageUrl={`/${slug}`}
       />
       <ContentContainer>
