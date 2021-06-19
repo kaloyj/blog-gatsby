@@ -34,7 +34,7 @@ function SEO({
 
   const metaDescription = description || site.siteMetadata.description
   const metaTitle = title || site.siteMetadata.title
-  const metaImage = image || resize.src
+  const metaImage = image || `${url}${resize.src}`
   const metaAlt = imageAlt || "Carlo Janea smiling with trees on the background"
   const metaUrl = `${url}${pageUrl}`
 
@@ -60,7 +60,7 @@ function SEO({
         },
         {
           property: `og:image`,
-          content: `${url}${metaImage}`,
+          content: metaImage,
         },
         {
           property: `og:url`,
@@ -80,7 +80,7 @@ function SEO({
         },
         {
           name: `twitter:card`,
-          content: `summary`,
+          content: `summary_large_image`,
         },
         {
           name: `twitter:creator`,
@@ -100,11 +100,11 @@ function SEO({
         },
         {
           name: `twitter:image`,
-          content: `${url}${metaImage}`,
+          content: metaImage,
         },
         {
           name: `twitter:image:src`,
-          content: `${url}${metaImage}`,
+          content: metaImage,
         },
         {
           name: `twitter:image:alt`,

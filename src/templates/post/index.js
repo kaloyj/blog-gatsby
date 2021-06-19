@@ -8,6 +8,7 @@ import SEO from "../../components/seo"
 import ContentContainer from "../../components/content-container"
 import NavBar from "../../components/navbar"
 import PostHeader from "./post-header"
+import { getSocialImage } from "../../../utils/cloudinary"
 
 export const query = graphql`
   query($slug: String) {
@@ -18,9 +19,6 @@ export const query = graphql`
         date(formatString: "MMMM DD, YYYY")
         image {
           sharp: childImageSharp {
-            resize {
-              src
-            }
             fluid(maxWidth: 900) {
               ...GatsbyImageSharpFluid_withWebp
             }
@@ -28,6 +26,8 @@ export const query = graphql`
         }
         coverAlt
         coverSource
+        titleBottomOffset
+        taglineTopOffset
         excerpt
       }
       body
@@ -47,17 +47,28 @@ const PostTemplate = ({
     coverAlt,
     coverSource,
     excerpt,
+    titleBottomOffset,
+    taglineTopOffset,
     image: {
-      sharp: { fluid, resize },
+      sharp: { fluid },
     },
   } = frontmatter
+
+  const image = getSocialImage({
+    title,
+    tagline: excerpt,
+    date,
+    // graphql returns null, we need undefined to trigger defaults
+    titleBottomOffset: titleBottomOffset || undefined,
+    taglineTopOffset: taglineTopOffset || undefined,
+  })
 
   return (
     <Layout>
       <SEO
         title={`Blog | ${title}`}
         description={excerpt}
-        image={resize.src}
+        image={image}
         imageAlt={coverAlt}
         pageUrl={`/${slug}`}
       />
