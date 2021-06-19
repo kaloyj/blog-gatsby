@@ -12,6 +12,7 @@ function SEO({
   image,
   imageAlt,
   pageUrl = "",
+  cardType = "summary_large_image",
 }) {
   const url =
     typeof window !== "undefined"
@@ -80,7 +81,7 @@ function SEO({
         },
         {
           name: `twitter:card`,
-          content: `summary_large_image`,
+          content: cardType,
         },
         {
           name: `twitter:creator`,

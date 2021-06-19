@@ -27,7 +27,7 @@ const IndexPage = () => {
 
   return (
     <Layout>
-      <SEO />
+      <SEO cardType="summary" />
       <ContentContainer>
         <NavBar></NavBar>
         <Hero></Hero>
