@@ -107,6 +107,10 @@ function SEO({
           content: metaImage,
         },
         {
+          name: `twitter:url`,
+          content: metaImage,
+        },
+        {
           name: `twitter:image:alt`,
           content: metaAlt,
         },
